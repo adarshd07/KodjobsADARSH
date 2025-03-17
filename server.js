@@ -10,9 +10,77 @@ const port = process.env.PORT || 3001
 // Add this near the top of server.js with other constants
 const API_CONFIG = {
   host: "active-jobs-db.p.rapidapi.com",
-  key: process.env.RAPID_API_KEY,
+  key: process.env.RAPID_API_KEY || "your-api-key-placeholder",
   baseURL: "https://active-jobs-db.p.rapidapi.com",
 }
+
+// Create mock jobs data to use as fallback when API key is not available
+const MOCK_JOBS = [
+  {
+    id: "1",
+    title: "Frontend Developer",
+    company_name: "Google",
+    company_logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png",
+    location: "Mountain View, CA",
+    salary: "$120,000 - $150,000",
+    description: "We are looking for a skilled Frontend Developer to join our team at Google.",
+    posted_date: "2023-05-15",
+    skills: ["JavaScript", "React", "HTML/CSS", "TypeScript"],
+    requirements: [
+      "5+ years of experience with frontend technologies",
+      "Strong understanding of React and state management",
+      "Experience with responsive design and cross-browser compatibility"
+    ]
+  },
+  {
+    id: "2",
+    title: "Backend Engineer",
+    company_name: "Microsoft",
+    company_logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png",
+    location: "Redmond, WA",
+    salary: "$130,000 - $160,000",
+    description: "Join our backend team to build scalable solutions for Microsoft products.",
+    posted_date: "2023-05-12",
+    skills: ["Python", "Node.js", "AWS", "Databases"],
+    requirements: [
+      "4+ years of backend development experience",
+      "Experience with cloud services (AWS, Azure)",
+      "Knowledge of database systems and optimization"
+    ]
+  },
+  {
+    id: "3",
+    title: "Full Stack Developer",
+    company_name: "Amazon",
+    company_logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png",
+    location: "Seattle, WA",
+    salary: "$140,000 - $170,000",
+    description: "We're seeking a Full Stack Developer to help build innovative solutions at Amazon.",
+    posted_date: "2023-05-10",
+    skills: ["JavaScript", "Node.js", "React", "MongoDB"],
+    requirements: [
+      "6+ years of full stack development experience",
+      "Strong understanding of frontend and backend technologies",
+      "Experience with e-commerce applications is a plus"
+    ]
+  },
+  {
+    id: "4",
+    title: "DevOps Engineer",
+    company_name: "IBM",
+    company_logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png",
+    location: "Austin, TX",
+    salary: "$125,000 - $155,000",
+    description: "Join our DevOps team to improve deployment pipelines and infrastructure.",
+    posted_date: "2023-05-08",
+    skills: ["Docker", "Kubernetes", "CI/CD", "AWS"],
+    requirements: [
+      "3+ years of DevOps experience",
+      "Experience with containerization and orchestration",
+      "Knowledge of infrastructure as code (Terraform, CloudFormation)"
+    ]
+  }
+]
 
 app.use(express.json())
 app.use(express.static("."))
@@ -185,50 +253,29 @@ const mockJobs = [
   }
 ];
 
-// Get job by ID endpoint
-app.get("/api/jobs/:id", async (req, res) => {
-  try {
-    const jobId = parseInt(req.params.id.replace(/"/g, ""));
-    
-    // First try to get from mock data
-    const mockJob = mockJobs.find(j => j.id === jobId);
-    if (mockJob) {
-      return res.json(mockJob);
-    }
-
-    // If not in mock data, try RapidAPI
-    const response = await fetch(
-      `${API_CONFIG.baseURL}/job-details/${jobId}`,
-      {
-        method: "GET",
-        headers: {
-          "X-RapidAPI-Host": API_CONFIG.host,
-          "X-RapidAPI-Key": API_CONFIG.key,
-        },
-      }
-    )
-
-    if (response.ok) {
-      const data = await response.json()
-      res.json(data)
-    } else {
-      res.status(404).json({ error: "Job not found" });
-    }
-  } catch (error) {
-    console.error("Error fetching job details:", error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// Add a new endpoint to fetch all jobs
+// API endpoint to get jobs
 app.get("/api/jobs", async (req, res) => {
+  const titleFilter = req.query.title || "";
+  const locationFilter = req.query.location || "";
+
   try {
-    const { title, location } = req.query;
-    const titleFilter = title ? `%22${encodeURIComponent(title)}%22` : '%22Software%22Developer%22';
-    const locationFilter = location ? `%22${encodeURIComponent(location)}%22` : '%22India%22';
+    // If no API key is provided, return mock data
+    if (!process.env.RAPID_API_KEY || process.env.RAPID_API_KEY === "your-api-key-placeholder") {
+      console.log("Using mock jobs data as API key is not available");
+      const filteredJobs = MOCK_JOBS.filter(job => {
+        return (
+          job.title.toLowerCase().includes(titleFilter.toLowerCase()) &&
+          job.location.toLowerCase().includes(locationFilter.toLowerCase())
+        );
+      });
+      return res.json(filteredJobs);
+    }
+
+    const formattedTitleFilter = titleFilter ? `%22${encodeURIComponent(titleFilter)}%22` : '%22Software%22Developer%22';
+    const formattedLocationFilter = locationFilter ? `%22${encodeURIComponent(locationFilter)}%22` : '%22India%22';
 
     const response = await fetch(
-      `${API_CONFIG.baseURL}/active-at-7d?title_filter=${titleFilter}&location_filter=${locationFilter}`,
+      `${API_CONFIG.baseURL}/active-at-7d?title_filter=${formattedTitleFilter}&location_filter=${formattedLocationFilter}`,
       {
         method: "GET",
         headers: {
@@ -236,20 +283,70 @@ app.get("/api/jobs", async (req, res) => {
           "X-RapidAPI-Key": API_CONFIG.key,
         },
       },
-    )
+    );
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching jobs:", error);
+    // Return mock data in case of error
+    const filteredJobs = MOCK_JOBS.filter(job => {
+      return (
+        job.title.toLowerCase().includes(titleFilter.toLowerCase()) &&
+        job.location.toLowerCase().includes(locationFilter.toLowerCase())
+      );
+    });
+    res.json(filteredJobs);
+  }
+});
 
+// API endpoint to get a specific job by ID
+app.get("/api/jobs/:id", async (req, res) => {
+  const jobId = req.params.id;
+
+  try {
+    // If no API key is provided, return mock data
+    if (!process.env.RAPID_API_KEY || process.env.RAPID_API_KEY === "your-api-key-placeholder") {
+      console.log("Using mock jobs data as API key is not available");
+      const job = MOCK_JOBS.find(job => job.id === jobId);
+      if (job) {
+        return res.json(job);
+      } else {
+        return res.status(404).json({ error: "Job not found" });
+      }
+    }
+
+    // Try to get from mock data first
+    const mockJob = mockJobs.find(job => job.id === parseInt(jobId.replace(/"/g, "")));
+    if (mockJob) {
+      return res.json(mockJob);
+    }
+
+    // If not in mock data, try API
+    const response = await fetch(`${API_CONFIG.baseURL}/job-by-id?id=${jobId}`, {
+      method: "GET",
+      headers: {
+        "X-RapidAPI-Host": API_CONFIG.host,
+        "X-RapidAPI-Key": API_CONFIG.key,
+      },
+    });
+    
     if (response.ok) {
-      const data = await response.json()
-      res.json(data)
+      const data = await response.json();
+      res.json(data);
     } else {
-      // If API fails, return mock data
-      res.json(mockJobs)
+      res.status(404).json({ error: "Job not found" });
     }
   } catch (error) {
-    console.error("Error fetching jobs:", error)
-    res.status(500).json({ error: "Failed to fetch jobs" })
+    console.error("Error fetching job details:", error);
+    // Return mock data in case of error
+    const job = MOCK_JOBS.find(job => job.id === jobId);
+    if (job) {
+      res.json(job);
+    } else {
+      res.status(404).json({ error: "Job not found" });
+    }
   }
-})
+}); 
 
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`)
