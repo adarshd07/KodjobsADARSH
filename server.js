@@ -349,6 +349,25 @@ app.get("/api/jobs/:id", async (req, res) => {
   }
 }); 
 
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`)
-})
+// Add proper error handling for serverless environment
+app.use((err, req, res, next) => {
+  console.error('Server error:', err);
+  res.status(500).json({ 
+    error: 'Internal Server Error', 
+    message: 'The server encountered an unexpected condition which prevented it from fulfilling the request.'
+  });
+});
+
+// For Vercel serverless deployment
+const isVercel = process.env.VERCEL === '1';
+
+// Handle both local development and Vercel serverless environments
+if (isVercel) {
+  // Export the Express app as a module for serverless functions
+  module.exports = app;
+} else {
+  // For local development with a traditional server
+  app.listen(port, () => {
+    console.log(`Server running on http://localhost:${port}`);
+  });
+}

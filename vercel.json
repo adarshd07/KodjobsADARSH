@@ -12,6 +12,21 @@
     {
       "src": "img/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "*.js",
+      "use": "@vercel/static",
+      "config": {
+        "includeFiles": ["!server.js"]
+      }
     }
   ],
   "routes": [
@@ -22,6 +37,14 @@
     {
       "src": "/img/(.*)",
       "dest": "/img/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|svg|jpg|png))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/server.js"
     },
     {
       "src": "/(.*)",
