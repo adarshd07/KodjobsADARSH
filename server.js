@@ -83,8 +83,9 @@ const MOCK_JOBS = [
 ]
 
 app.use(express.json())
-app.use(express.static("."))
+app.use(express.static(path.join(__dirname)))
 app.use("/img", express.static(path.join(__dirname, "img")))
+app.use("/images", express.static(path.join(__dirname, "images")))
 
 // Read users from JSON file
 function readUsers() {
