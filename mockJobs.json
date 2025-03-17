@@ -1,0 +1,63 @@
+[
+  {
+    "id": "1",
+    "title": "Software Developer",
+    "company": "Tech Corp",
+    "location": "Bengaluru",
+    "salary_range": "6 LPA",
+    "skills": ["JavaScript", "React", "Node.js"],
+    "logo": "https://cdn-icons-png.flaticon.com/512/2910/2910791.png",
+    "posted_at": "2024-03-01",
+    "expires_at": "2024-04-01",
+    "description": "We are looking for a talented software developer to join our team. The ideal candidate will have experience with JavaScript, React, and Node.js. You will be responsible for developing and maintaining web applications, collaborating with cross-functional teams, and ensuring the performance and quality of applications."
+  },
+  {
+    "id": "2",
+    "title": "Data Analyst",
+    "company": "Data Inc",
+    "location": "Mumbai",
+    "salary_range": "4.5 LPA",
+    "skills": ["Python", "SQL", "Data Visualization"],
+    "logo": "https://cdn-icons-png.flaticon.com/512/2906/2906274.png",
+    "posted_at": "2024-03-02",
+    "expires_at": "2024-04-02",
+    "description": "We are seeking a Data Analyst to join our growing team. The ideal candidate will have strong analytical skills and experience with Python, SQL, and data visualization tools. You will be responsible for analyzing data, creating reports, and providing insights to help drive business decisions."
+  },
+  {
+    "id": "3",
+    "title": "Frontend Developer",
+    "company": "Web Solutions",
+    "location": "Hyderabad",
+    "salary_range": "5 LPA",
+    "skills": ["HTML", "CSS", "JavaScript", "React"],
+    "logo": "https://cdn-icons-png.flaticon.com/512/1688/1688400.png",
+    "posted_at": "2024-03-03",
+    "expires_at": "2024-04-03",
+    "description": "We are looking for a Frontend Developer to join our team. You will be responsible for implementing visual elements that users see and interact with in a web application. You should have strong experience with HTML, CSS, JavaScript, and React."
+  },
+  {
+    "id": "4",
+    "title": "Backend Developer",
+    "company": "Server Systems",
+    "location": "Pune",
+    "salary_range": "7 LPA",
+    "skills": ["Node.js", "Express", "MongoDB", "SQL"],
+    "logo": "https://cdn-icons-png.flaticon.com/512/2721/2721264.png",
+    "posted_at": "2024-03-04",
+    "expires_at": "2024-04-04",
+    "description": "We are seeking a Backend Developer to join our team. You will be responsible for server-side web application logic and integration of the work front-end developers do. You should have experience with Node.js, Express, and database systems like MongoDB and SQL."
+  },
+  {
+    "id": "5",
+    "title": "Full Stack Developer",
+    "company": "Tech Solutions",
+    "location": "Delhi",
+    "salary_range": "8 LPA",
+    "skills": ["JavaScript", "React", "Node.js", "MongoDB"],
+    "logo": "https://cdn-icons-png.flaticon.com/512/6062/6062646.png",
+    "posted_at": "2024-03-05",
+    "expires_at": "2024-04-05",
+    "description": "We are looking for a Full Stack Developer to join our team. You will be responsible for developing and maintaining both front-end and back-end components of our web applications. You should have experience with JavaScript, React, Node.js, and MongoDB."
+  }
+]
+

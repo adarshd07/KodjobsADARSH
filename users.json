@@ -1,0 +1,20 @@
+{
+  "users": [
+    {
+      "username": "Adarsh",
+      "password": "Adarsh123$",
+      "email": "adarshdandage787@gmail.com",
+      "dob": "2003-02-28"
+    },
+    {
+      "email": "test@example.com",
+      "password": "test123"
+    },
+    {
+      "username": "adarshd07",
+      "password": "Adarsh@123",
+      "email": "adarsh@gmail.com",
+      "dob": "2003-02-28"
+    }
+  ]
+}

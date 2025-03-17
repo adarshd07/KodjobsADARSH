@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100" viewBox="0 0 200 100">
+    <!-- KodJobs!!! text -->
+    <text x="10" y="50" font-family="Arial" font-size="32" font-weight="bold" fill="#000">KodJobs!!!</text>
+    
+    <!-- Colored triangles -->
+    <polygon points="150,20 160,35 140,35" fill="#4481eb"/> <!-- Blue triangle -->
+    <polygon points="165,15 175,30 155,30" fill="#ff7675"/> <!-- Orange/Red triangle -->
+    <polygon points="160,25 170,40 150,40" fill="#2ecc71"/> <!-- Green triangle -->
+    
+    <!-- Tagline -->
+    <text x="10" y="70" font-family="Arial" font-size="12" fill="#666">Here where we look for an stable future</text>
+</svg> 

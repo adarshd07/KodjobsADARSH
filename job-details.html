@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details - KodJobs!!!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f3f2ef;
+            min-height: 100vh;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a66c2;
+        }
+
+        .logo-triangles {
+            display: flex;
+            position: relative;
+            margin-left: 4px;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 9px solid;
+            position: absolute;
+            transition: transform 0.3s ease;
+        }
+
+        .triangle-1 {
+            border-bottom-color: #4481eb;
+            transform: translateX(-5px);
+        }
+
+        .triangle-2 {
+            border-bottom-color: #ff7675;
+            transform: translateX(2px) translateY(-2px);
+        }
+
+        .triangle-3 {
+            border-bottom-color: #2ecc71;
+            transform: translateX(9px) translateY(-1px);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .profile-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #0a66c2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: white;
+            height: calc(100vh - 70px);
+            border-right: 1px solid #e0e0e0;
+            padding: 20px;
+            position: fixed;
+            top: 70px;
+            left: 0;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 10px;
+            color: #666;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .sidebar-link:hover {
+            background: #f3f2ef;
+        }
+
+        .sidebar-link.active {
+            color: #0a66c2;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .job-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .job-header {
+            background: linear-gradient(135deg, #0a66c2 0%, #0077b6 100%);
+            color: white;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .job-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            transform: rotate(45deg);
+            pointer-events: none;
+        }
+
+        .job-header::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -50%;
+            width: 100%;
+            height: 200%;
+            background: linear-gradient(45deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 100%);
+            transform: rotate(45deg);
+            pointer-events: none;
+        }
+
+        .company-logo-wrapper {
+            width: 160px;
+            height: 100px;
+            background: white;
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .company-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            max-width: 140px;
+        }
+
+        .job-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .company-name {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .job-highlights {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem 1.25rem;
+            border-radius: 100px;
+        }
+
+        .highlight-item i {
+            font-size: 1.25rem;
+        }
+
+        .job-content {
+            padding: 2rem;
+        }
+
+        .content-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title i {
+            color: #0a66c2;
+        }
+
+        .description {
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .description p {
+            margin-bottom: 1.5rem;
+        }
+
+        .skills-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .skill-tag {
+            background: #f0f7ff;
+            color: #0a66c2;
+            padding: 0.75rem 1.25rem;
+            border-radius: 100px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .skill-tag:hover {
+            background: #e1edff;
+            transform: translateY(-1px);
+        }
+
+        .skill-tag i {
+            font-size: 0.875rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .info-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-value {
+            color: #1a1a1a;
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .apply-btn {
+            flex: 1;
+            background: #0a66c2;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .apply-btn:hover {
+            background: #084e96;
+            transform: translateY(-2px);
+        }
+
+        .save-btn {
+            background: #f0f7ff;
+            color: #0a66c2;
+            border: 2px solid #0a66c2;
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .save-btn:hover {
+            background: #e1edff;
+        }
+
+        .requirements-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin: 2rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .requirements-title i {
+            color: #0a66c2;
+        }
+
+        .requirements-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .requirements-list li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: #4b5563;
+            line-height: 1.5;
+        }
+
+        .requirements-list li i {
+            color: #0a66c2;
+            margin-top: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .error-state {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .error-state i {
+            font-size: 3rem;
+            color: #ff9800;
+            margin-bottom: 1rem;
+        }
+
+        .error-state h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .error-state p {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Add popup styles */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #4481eb;
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            text-align: center;
+            animation: popIn 0.5s forwards;
+            display: none;
+        }
+        
+        @keyframes popIn {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .popup h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .popup p {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/jobs" class="logo-container">
+            <div class="logo-text">
+                KodJobs
+                <div class="logo-triangles">
+                    <div class="triangle triangle-1"></div>
+                    <div class="triangle triangle-2"></div>
+                    <div class="triangle triangle-3"></div>
+                </div>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="/jobs" class="nav-link">Jobs</a>
+            <a href="/profile" class="profile-icon">A</a>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <a href="/jobs" class="sidebar-link">
+            <i class="fas fa-briefcase"></i> Jobs
+        </a>
+        <a href="/profile" class="sidebar-link">
+            <i class="fas fa-user"></i> Profile
+        </a>
+        <a href="/" class="sidebar-link" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Log Out
+        </a>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="job-card">
+                <div class="job-header">
+                    <div class="company-logo-wrapper">
+                        <img src="" alt="Company Logo" class="company-logo" id="companyLogo">
+                    </div>
+                    <h1 class="job-title" id="jobTitle">Loading...</h1>
+                    <h2 class="company-name" id="companyName">Loading...</h2>
+                    
+                    <div class="job-highlights">
+                        <div class="highlight-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span id="jobLocation">Loading...</span>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span id="jobSalary">Loading...</span>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Full Time</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="job-content">
+                    <div class="content-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-briefcase"></i>
+                            Job Description
+                        </h2>
+                        <div class="description" id="jobDescription">Loading...</div>
+                    </div>
+
+                    <div class="content-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-tools"></i>
+                            Required Skills
+                        </h2>
+                        <div class="skills-grid" id="jobSkills">
+                            <!-- Skills will be added here dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <h2 class="section-title">
+                            <i class="fas fa-info-circle"></i>
+                            Additional Information
+                        </h2>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Posted Date</span>
+                                <span class="info-value" id="postedDate">Loading...</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Experience Level</span>
+                                <span class="info-value">Entry Level</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Work Type</span>
+                                <span class="info-value">Remote</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="apply-btn" id="applyButton">
+                            <i class="fas fa-paper-plane"></i>
+                            Apply Now
+                        </button>
+                        <button class="save-btn">
+                            <i class="far fa-bookmark"></i>
+                            Save Job
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add popup elements -->
+    <div class="popup-overlay" id="popupOverlay"></div>
+    <div class="popup" id="applicationPopup">
+        <i class="fas fa-check-circle" style="font-size: 3rem; color: #2ecc71; margin-bottom: 1rem;"></i>
+        <h2>Applied!!!</h2>
+        <p>ALL THE BEST BUDDY!!!</p>
+        <button class="apply-btn" style="width: 100%; margin-top: 1rem;" onclick="closePopup()">
+            <i class="fas fa-thumbs-up"></i>
+            Thanks
+        </button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const jobId = urlParams.get('id');
+            
+            // Setup apply button click event
+            document.getElementById('applyButton').addEventListener('click', () => {
+                document.getElementById('popupOverlay').style.display = 'block';
+                document.getElementById('applicationPopup').style.display = 'block';
+            });
+            
+            // Close popup function
+            window.closePopup = function() {
+                document.getElementById('popupOverlay').style.display = 'none';
+                document.getElementById('applicationPopup').style.display = 'none';
+            };
+            
+            if (jobId) {
+                try {
+                    const response = await fetch(`/api/jobs/${jobId}`);
+                    const job = await response.json();
+                    
+                    // Update job details
+                    document.getElementById('jobTitle').textContent = job.title;
+                    document.getElementById('companyName').textContent = job.company_name;
+                    document.getElementById('jobLocation').textContent = job.location;
+                    document.getElementById('jobSalary').textContent = job.salary;
+                    document.getElementById('jobDescription').textContent = job.description;
+                    document.getElementById('postedDate').textContent = job.posted_date;
+                    
+                    // Set company logo with error handling
+                    const logoElement = document.getElementById('companyLogo');
+                    logoElement.src = job.company_logo || 'https://via.placeholder.com/160x100?text=Company+Logo';
+                    logoElement.alt = `${job.company_name} logo`;
+                    logoElement.onerror = () => {
+                        logoElement.src = 'https://via.placeholder.com/160x100?text=Company+Logo';
+                    };
+                    
+                    // Render skills with icons
+                    const skillsContainer = document.getElementById('jobSkills');
+                    if (job.skills && job.skills.length > 0) {
+                        skillsContainer.innerHTML = job.skills.map(skill => `
+                            <span class="skill-tag">
+                                <i class="fas fa-check-circle"></i>
+                                ${skill}
+                            </span>
+                        `).join('');
+                    }
+
+                    // Render requirements if available
+                    if (job.requirements && job.requirements.length > 0) {
+                        const descriptionElement = document.getElementById('jobDescription');
+                        descriptionElement.innerHTML = `
+                            <p>${job.description}</p>
+                            <h3 class="requirements-title">Requirements:</h3>
+                            <ul class="requirements-list">
+                                ${job.requirements.map(req => `
+                                    <li>
+                                        <i class="fas fa-check"></i>
+                                        ${req}
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        `;
+                    }
+
+                } catch (error) {
+                    console.error('Error fetching job details:', error);
+                    // Show error state
+                    document.querySelector('.job-card').innerHTML = `
+                        <div class="error-state">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <h2>Failed to load job details</h2>
+                            <p>Please try again later or go back to the jobs list.</p>
+                            <a href="/jobs" class="apply-btn">
+                                <i class="fas fa-arrow-left"></i>
+                                Back to Jobs
+                            </a>
+                        </div>
+                    `;
+                }
+            }
+        });
+
+        function logout() {
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

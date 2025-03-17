@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - KodJobs!!!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f3f2ef;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            border-bottom: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            color: #0a66c2;
+        }
+
+        .logo-triangles {
+            display: flex;
+            position: relative;
+            margin-left: 4px;
+        }
+
+        .triangle {
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 9px solid;
+            position: absolute;
+            transition: transform 0.3s ease;
+        }
+
+        .triangle-1 {
+            border-bottom-color: #4481eb;
+            transform: translateX(-5px);
+        }
+
+        .triangle-2 {
+            border-bottom-color: #ff7675;
+            transform: translateX(2px) translateY(-2px);
+        }
+
+        .triangle-3 {
+            border-bottom-color: #2ecc71;
+            transform: translateX(9px) translateY(-1px);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .profile-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #0a66c2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: white;
+            height: calc(100vh - 70px);
+            border-right: 1px solid #e0e0e0;
+            padding: 20px;
+            position: fixed;
+            top: 70px;
+            left: 0;
+        }
+
+        .sidebar-link {
+            display: block;
+            padding: 10px;
+            color: #666;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .sidebar-link:hover {
+            background: #f3f2ef;
+        }
+
+        .sidebar-link.active {
+            color: #0a66c2;
+            font-weight: 600;
+        }
+
+        .main-content {
+            margin-left: 200px;
+            padding: 30px;
+        }
+
+        .profile-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .profile-picture {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 4px solid #0a66c2;
+            overflow: hidden;
+        }
+
+        .profile-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-picture-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+
+        .profile-picture:hover .profile-picture-overlay {
+            opacity: 1;
+        }
+
+        .profile-picture-overlay i {
+            color: white;
+            font-size: 24px;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 32px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .profile-email {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .profile-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .education-item {
+            margin-bottom: 20px;
+        }
+
+        .education-title {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .education-details {
+            color: #666;
+        }
+
+        .edit-btn {
+            background: #0a66c2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .edit-btn:hover {
+            background: #004182;
+        }
+
+        #profilePictureInput {
+            display: none;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .save-btn {
+            background-color: #0a66c2;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .save-btn:hover {
+            background-color: #004182;
+        }
+
+        .kodjobs-slogan {
+            font-size: 16px;
+            color: #666;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .logo-large {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-large .logo-text {
+            font-size: 48px;
+            font-weight: 700;
+            color: #0a66c2;
+        }
+
+        .logo-large .logo-triangles {
+            transform: scale(1.5);
+            margin-left: 10px;
+        }
+
+        .info-item {
+            margin-bottom: 15px;
+        }
+
+        .info-item label {
+            font-weight: 500;
+            color: #666;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-item p {
+            color: #333;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="/jobs" class="logo-container">
+            <div class="logo-text">
+                KodJobs
+                <div class="logo-triangles">
+                    <div class="triangle triangle-1"></div>
+                    <div class="triangle triangle-2"></div>
+                    <div class="triangle triangle-3"></div>
+                </div>
+            </div>
+        </a>
+        <div class="nav-links">
+            <a href="/jobs" class="nav-link">Jobs</a>
+            <a href="/profile" class="profile-icon">A</a>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <a href="/jobs" class="sidebar-link">
+            <i class="fas fa-briefcase"></i> Jobs
+        </a>
+        <a href="/profile" class="sidebar-link active">
+            <i class="fas fa-user"></i> Profile
+        </a>
+        <a href="/" class="sidebar-link" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Log Out
+        </a>
+    </div>
+
+    <div class="main-content">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-picture" id="profilePictureContainer">
+                    <img src="https://via.placeholder.com/150" alt="Profile Picture" id="profilePicture">
+                    <div class="profile-picture-overlay" onclick="triggerFileInput()">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <input type="file" id="profilePictureInput" accept="image/*">
+                </div>
+                <div class="profile-info">
+                    <h1 class="profile-name" id="profileName">Adarsh</h1>
+                    <p class="profile-email" id="profileEmail">adarshdandage787@gmail.com</p>
+                    <button class="edit-btn" onclick="openEditProfileModal()">Edit Profile</button>
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h2 class="section-title">
+                    Education 
+                    <button onclick="openEducationModal()" class="edit-btn" style="float: right;">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </h2>
+                <div id="educationSection">
+                    <!-- Education items will be dynamically added here -->
+                </div>
+            </div>
+
+            <div class="profile-section">
+                <h2 class="section-title">
+                    Personal Information
+                    <button onclick="openPersonalInfoModal()" class="edit-btn" style="float: right;">
+                        <i class="fas fa-edit"></i> Edit
+                    </button>
+                </h2>
+                <div id="personalInfoSection">
+                    <div class="info-item">
+                        <label>Phone Number:</label>
+                        <p id="displayPhone">Not Added</p>
+                    </div>
+                    <div class="info-item">
+                        <label>Address:</label>
+                        <p id="displayAddress">Not Added</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Education Modal -->
+    <div id="educationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add Education</h2>
+                <span class="modal-close" onclick="closeEducationModal()">&times;</span>
+            </div>
+            <div class="form-group">
+                <label>Institution Name</label>
+                <input type="text" id="institutionName" placeholder="Enter institution name">
+            </div>
+            <div class="form-group">
+                <label>Degree</label>
+                <select id="degreeType">
+                    <option value="">Select Degree Type</option>
+                    <option value="High School">High School</option>
+                    <option value="Undergraduate">Undergraduate</option>
+                    <option value="Postgraduate">Postgraduate</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Graduation Year</label>
+                <input type="number" id="graduationYear" placeholder="Enter graduation year">
+            </div>
+            <button class="save-btn" onclick="saveEducation()">Save Education</button>
+        </div>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div id="profileEditModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Profile</h2>
+                <span class="modal-close" onclick="closeProfileEditModal()">&times;</span>
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="editFullName" placeholder="Enter your full name">
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="editPhone" placeholder="Enter your phone number">
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <textarea id="editAddress" placeholder="Enter your full address" rows="3"></textarea>
+            </div>
+            <button class="save-btn" onclick="saveProfileChanges()">Save Changes</button>
+        </div>
+    </div>
+
+    <!-- Personal Info Modal -->
+    <div id="personalInfoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Personal Information</h2>
+                <span class="modal-close" onclick="closePersonalInfoModal()">&times;</span>
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="editPersonalPhone" placeholder="Enter your phone number">
+            </div>
+            <div class="form-group">
+                <label>Address</label>
+                <textarea id="editPersonalAddress" placeholder="Enter your full address" rows="3"></textarea>
+            </div>
+            <button class="save-btn" onclick="savePersonalInfo()">Save Changes</button>
+        </div>
+    </div>
+
+    <script>
+        // Education Management
+        let educations = [];
+
+        function openEducationModal() {
+            document.getElementById('educationModal').style.display = 'block';
+        }
+
+        function closeEducationModal() {
+            document.getElementById('educationModal').style.display = 'none';
+        }
+
+        function saveEducation() {
+            const institutionName = document.getElementById('institutionName').value;
+            const degreeType = document.getElementById('degreeType').value;
+            const graduationYear = document.getElementById('graduationYear').value;
+
+            if (institutionName && degreeType && graduationYear) {
+                const education = {
+                    institutionName,
+                    degreeType,
+                    graduationYear
+                };
+
+                educations.push(education);
+                updateEducationDisplay();
+                closeEducationModal();
+                saveEducationsToLocalStorage();
+            } else {
+                alert('Please fill in all fields');
+            }
+        }
+
+        function updateEducationDisplay() {
+            const educationSection = document.getElementById('educationSection');
+            educationSection.innerHTML = '';
+
+            educations.forEach((edu, index) => {
+                const eduItem = document.createElement('div');
+                eduItem.className = 'education-item';
+                eduItem.innerHTML = `
+                    <h3 class="education-title">${edu.institutionName}</h3>
+                    <p class="education-details">${edu.degreeType} - ${edu.graduationYear}</p>
+                    <button onclick="deleteEducation(${index})" class="edit-btn" style="margin-top: 10px;">Delete</button>
+                `;
+                educationSection.appendChild(eduItem);
+            });
+        }
+
+        function deleteEducation(index) {
+            educations.splice(index, 1);
+            updateEducationDisplay();
+            saveEducationsToLocalStorage();
+        }
+
+        function saveEducationsToLocalStorage() {
+            localStorage.setItem('userEducations', JSON.stringify(educations));
+        }
+
+        function loadEducationsFromLocalStorage() {
+            const savedEducations = localStorage.getItem('userEducations');
+            if (savedEducations) {
+                educations = JSON.parse(savedEducations);
+                updateEducationDisplay();
+            }
+        }
+
+        // Profile Edit Functions
+        function openEditProfileModal() {
+            document.getElementById('profileEditModal').style.display = 'block';
+            
+            // Pre-fill existing data
+            const savedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            document.getElementById('editFullName').value = savedProfile.fullName || '';
+            document.getElementById('editPhone').value = savedProfile.phone || '';
+            document.getElementById('editAddress').value = savedProfile.address || '';
+        }
+
+        function closeProfileEditModal() {
+            document.getElementById('profileEditModal').style.display = 'none';
+        }
+
+        function saveProfileChanges() {
+            const fullName = document.getElementById('editFullName').value;
+            const phone = document.getElementById('editPhone').value;
+            const address = document.getElementById('editAddress').value;
+
+            if (fullName && phone) {
+                document.getElementById('profileName').textContent = fullName;
+                
+                const savedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+                const updatedProfile = {
+                    ...savedProfile,
+                    fullName,
+                    phone,
+                    address
+                };
+                
+                localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
+                
+                // Update personal info display
+                document.getElementById('displayPhone').textContent = phone || 'Not Added';
+                document.getElementById('displayAddress').textContent = address || 'Not Added';
+                
+                closeProfileEditModal();
+            } else {
+                alert('Please fill in required fields (Name and Phone Number)');
+            }
+        }
+
+        // Personal Info Functions
+        function openPersonalInfoModal() {
+            document.getElementById('personalInfoModal').style.display = 'block';
+            
+            const savedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            document.getElementById('editPersonalPhone').value = savedProfile.phone || '';
+            document.getElementById('editPersonalAddress').value = savedProfile.address || '';
+        }
+
+        function closePersonalInfoModal() {
+            document.getElementById('personalInfoModal').style.display = 'none';
+        }
+
+        function savePersonalInfo() {
+            const phone = document.getElementById('editPersonalPhone').value;
+            const address = document.getElementById('editPersonalAddress').value;
+
+            // Update display
+            document.getElementById('displayPhone').textContent = phone || 'Not Added';
+            document.getElementById('displayAddress').textContent = address || 'Not Added';
+
+            // Update local storage
+            const savedProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            const updatedProfile = {
+                ...savedProfile,
+                phone,
+                address
+            };
+            localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
+
+            // Close modal
+            closePersonalInfoModal();
+        }
+
+        // Load Profile Data on Page Load
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load profile picture
+            const savedProfilePicture = localStorage.getItem('profilePicture');
+            if (savedProfilePicture) {
+                document.getElementById('profilePicture').src = savedProfilePicture;
+            }
+
+            // Load saved profile
+            const savedProfile = localStorage.getItem('userProfile');
+            if (savedProfile) {
+                const profile = JSON.parse(savedProfile);
+                document.getElementById('profileName').textContent = profile.fullName || 'Adarsh';
+                
+                // Update personal info display
+                document.getElementById('displayPhone').textContent = profile.phone || 'Not Added';
+                document.getElementById('displayAddress').textContent = profile.address || 'Not Added';
+            }
+
+            // Load educations
+            loadEducationsFromLocalStorage();
+        });
+
+        // Profile Picture Upload
+        function triggerFileInput() {
+            document.getElementById('profilePictureInput').click();
+        }
+
+        document.getElementById('profilePictureInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profilePicture').src = e.target.result;
+                    localStorage.setItem('profilePicture', e.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function logout() {
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
+
