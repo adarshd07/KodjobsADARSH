@@ -112,35 +112,61 @@ function displayJobs(jobs) {
   jobsContainer.innerHTML = "" // Clear existing content
 
   jobs.forEach((job) => {
-    const jobCard = `
-            <div class="job-card">
-                <div class="company-logo-container">
-                    <img src="${job.logo}" alt="${job.company}" class="company-logo">
-                </div>
-                <div class="job-info">
-                    <h3>${job.title}</h3>
-                    <p class="company-name">${job.company}</p>
-                    <p class="location">
-                        <i class="fas fa-map-marker-alt"></i>
-                        ${job.location}
-                    </p>
-                    <div class="tags">
-                        ${job.tags.map((tag) => `<span class="tag">${tag}</span>`).join("")}
-                    </div>
-                </div>
-                <div class="job-meta">
-                    <div class="lpa">${job.lpa}</div>
-                    <div class="posted-time">${job.postedDays}</div>
-                    <div class="not-applied">
-                        <i class="far fa-circle"></i>
-                        Not Applied
-                    </div>
-                    <button class="check-details" onclick="checkDetails(${job.id})">Check Details</button>
+    // Create a logo URL with a fallback
+    const logoUrl = job.logo || job.company_logo || 'https://via.placeholder.com/100x60?text=Logo';
+    
+    const jobCard = document.createElement('div');
+    jobCard.className = 'job-card';
+    
+    jobCard.innerHTML = `
+            <div class="company-logo-container">
+                <img src="${logoUrl}" 
+                     alt="${job.company || job.company_name}" 
+                     class="company-logo loading"
+                     onerror="this.onerror=null; this.src='https://via.placeholder.com/100x60?text=${encodeURIComponent(job.company || job.company_name)}'; this.classList.remove('loading');">
+            </div>
+            <div class="job-info">
+                <h3>${job.title}</h3>
+                <p class="company-name">${job.company || job.company_name}</p>
+                <p class="location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    ${job.location}
+                </p>
+                <div class="tags">
+                    ${(job.tags || job.skills || []).map((tag) => `<span class="tag">${tag}</span>`).join("")}
                 </div>
             </div>
-        `
-    jobsContainer.innerHTML += jobCard
+            <div class="job-meta">
+                <div class="lpa">${job.lpa || job.salary || ""}</div>
+                <div class="posted-time">${job.postedDays || `Posted ${job.posted_date || 'recently'}`}</div>
+                <div class="not-applied">
+                    <i class="far fa-circle"></i>
+                    Not Applied
+                </div>
+                <button class="check-details" onclick="checkDetails(${job.id})">View Details</button>
+            </div>
+        `;
+    
+    // Add image load event listener
+    const logoImg = jobCard.querySelector('.company-logo');
+    logoImg.addEventListener('load', function() {
+      this.classList.remove('loading');
+    });
+    
+    jobsContainer.appendChild(jobCard);
   })
+  
+  // Add this code to ensure all existing images are properly handled
+  document.addEventListener('DOMContentLoaded', function() {
+    const allLogos = document.querySelectorAll('.company-logo');
+    allLogos.forEach(logo => {
+      if (logo.complete) {
+        logo.classList.remove('loading');
+      } else {
+        logo.classList.add('loading');
+      }
+    });
+  });
 }
 
 function checkDetails(jobId) {
@@ -157,4 +183,3 @@ document.head.innerHTML +=
 
 // Call fetchJobs when the jobs page loads
 document.addEventListener("DOMContentLoaded", fetchJobs)
-
